@@ -1,0 +1,114 @@
+Drone By ML-agents
+
+1. Create a Unity Project
+- Project Setting
+	- Player => Linear
+- Package Manager =>Post Processing 설치
+
+2. Install the Input System & Working with the input Mapping
+
+2.1 Package Manager =>Input System 설치
+
+2.2 Assets => Create  Input Action 생성 (Drone_Input)으로 변경
+	- Action Maps => Drone
+		- Action => Move 생성 (Type : Value)
+			- AD 생성 : Composite Type : 1D Axis
+			- Negative : A [keyboard] => Path : A [keyboard]
+			- Positive : D [keyboard] => Path : D [keyboard]
+
+2.3 Test_Input(Script) 파일 Inspector 설정
+	- Add Component => Player Input => Actions : Drone_Input 파일 추가
+		- Default Map : Drone으로 설정
+		- Behavior : Send Message로 설정
+
+2.4 Assets => Create  C# 생성 ( Test_Input)으로 변경
+	- using UnityEngine.InputSystem; 추가
+	- OnMove 함수 생성
+		- private void OnMove(InputValue value)
+   			 {
+        				Debug.Log(value.Get<float>());
+   			 }
+	- Test_Input 파일 Inspector 설정
+		- Test_Input(Script) 파일 추가
+
+2.5 Game에서 동작 후 Console 로그 확인
+
+3. Prep the Drone Model
+- Project (파일 정리) 
+	- Assets 
+		- Drone_Controller 생성
+			- Art 폴더 생성
+				- Art 폴더에 드론 이미지 파일 옮기기
+			- Code 파일 생성
+			- Input 파일 생성
+				- Drone_Input 파일 옮기기
+			- Scenes 파일 생성
+				- Drone_Controller로 이름 변경후 저장
+
+- Hierarchy 
+	- Level_GRP 생성
+		- Light_GRP 생성
+			- Directional Light 파일 옮기기
+			- Reflection Probe 생성
+
+	- Ground 생성 (3D -> Plane)
+		- 드론 파일에 Textures 폴더를 Art 폴더로 복사
+		- Gray_Grid_Mat
+			- Albedo에 gray_grid 파일을 드래그
+		- 그 후 Ground 파일로 드래그
+
+- Window
+	- Rendering
+		- Lighting
+			- Scene에서 Lighting Settings 생성
+			- Lightingmapping Setting
+				- Indiect Samples : 128
+				- Envronment Samples : 128
+				- Lightmap Resoution : 10
+				- Parameters : Default-LowResolution 
+
+			- Environment 
+			- Directional Light => Sun Source로 드래그
+
+
+Section2 - Video2 (2021.04.19)
+* Core Concepts
+- Set up our Input scripts
+- Drone_Input 설정
+	- Cyclic 생성 
+		- Action : Pass Trough
+		- Control : Vector 2
+		- Add 2D Vector	
+			- WASD 생성
+			- LStick 생성
+
+	- Pedals 생성
+		- Action : Pass Trough
+		- Control : Axis
+		- Add 1D Axis
+			- Left Arrow
+			- Right Arrow
+			- RSticks 생성
+
+	- Trottle 생성 (상하)
+		- Action : Pass Trough
+		- Control : Axis
+		- Add 1D Axis
+			- Down Arrow
+			- UP Arrow
+			- RSticks 생성
+
+- Input에 관한 Scripts 생성
+	-  IP_Drone_Inputs
+		- region을 사용하여 블록지정
+		- 변수 선언
+		- 변수에 관한 프로퍼티 생성
+		- Input 함수 생성
+			- Oncyclic 함수 (WASD)의 값이 들어왔을때 cyclic변수에 값 지정
+			- OnPedals 함수 (방향키 좌,우)의 값이 들어왔을때 pedals변수에 값 지정
+			- OnThrottle 함수 (방향키 상,하)의 값이 들어왔을때 throttle변수에 값 지정
+
+
+- 드론 카메라와 같은 시각표현 ctrl + shift + f
+
+- Rigidbody Drag = 드래그가 감소하고 있기 때문에 어느 시점에서 천천히 멈춤
